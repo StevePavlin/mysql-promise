@@ -51,17 +51,17 @@ DB.prototype.query = function (query, params) {
 				if (con) {
 					con.release();
 				}
-				return reject('Database connection error.');
+				return reject(err);
 			}
 
-			con.query(query, params, function (err) {
+			con.query(query, params, function (err, results, fields) {
 				if (err) {
 					if (con) {
 						con.release();
 					}
-					return reject('Database query error.');
+					return reject(err);
 				}
-				resolve([].splice.call(arguments, 1));
+				resolve(results);
 				con.release();
 			});
 		});
@@ -78,7 +78,7 @@ DB.prototype.end = function () {
 	return new Promise(function (resolve, reject) {
 		self.pool.end(function (err) {
 			if (err) {
-				return reject('Database end error.');
+				return reject(err);
 			}
 
 			resolve();
