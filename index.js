@@ -51,7 +51,7 @@ DB.prototype.query = function (query, params) {
 				if (con) {
 					con.release();
 				}
-				return reject(err);
+				return reject('Database connection error.');
 			}
 
 			con.query(query, params, function (err) {
@@ -59,7 +59,7 @@ DB.prototype.query = function (query, params) {
 					if (con) {
 						con.release();
 					}
-					return reject(err);
+					return reject('Database query error.');
 				}
 				resolve([].splice.call(arguments, 1));
 				con.release();
@@ -78,7 +78,7 @@ DB.prototype.end = function () {
 	return new Promise(function (resolve, reject) {
 		self.pool.end(function (err) {
 			if (err) {
-				return reject(err);
+				return reject('Database end error.');
 			}
 
 			resolve();
